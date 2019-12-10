@@ -29,16 +29,16 @@ function errorHandler(event) {
 }
 
 class WebSocket extends EventTarget(EVENTS) {
-  constructor(url, protocal) {
+  constructor(url, protocol) {
     if (!url) {
       throw new TypeError('Failed to construct \'WebSocket\': url required');
     }
-    if (protocal && !(wx.canIUse && wx.canIUse('connectSocket.object.protocols'))) {
-      throw new Error('subprotocal not supported in weapp');
+    if (protocol && !(wx.canIUse && wx.canIUse('connectSocket.object.protocols'))) {
+      throw new Error('subprotocol not supported in weapp');
     }
     super();
     this._url = url;
-    this._protocal = protocal || ''; // default value according to specs
+    this._protocol = protocol || ''; // default value according to specs
     this._readyState = CONNECTING;
     if (instance) {
       instance.dispatchEvent({
@@ -93,7 +93,7 @@ class WebSocket extends EventTarget(EVENTS) {
     
     wx.connectSocket({
       url,
-      protocals: this._protocal,
+      protocols: this._protocol,
       fail: (error) => setTimeout(() => errorHandler(error), 0),
     });
   }
@@ -101,8 +101,8 @@ class WebSocket extends EventTarget(EVENTS) {
   get url() {
     return this._url;
   }
-  get protocal() {
-    return this._protocal;
+  get protocol() {
+    return this._protocol;
   }
   get readyState() {
     return this._readyState;
